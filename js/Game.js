@@ -26,7 +26,7 @@ TopDownGame.Game.prototype = {
     this.createEnemies();
     this.createEnemiesDiagonals();
 
-    this.createHealth();
+    this.createHUD();
 
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
@@ -83,7 +83,6 @@ TopDownGame.Game.prototype = {
       enemy.body.collideWorldBounds = true;
       enemy.body.bounce.setTo(1, 1);
       enemy.body.velocity.x = 20;
-      enemy.anchor.setTo(.5,.5);
 
     }, this);
   },
@@ -106,7 +105,8 @@ TopDownGame.Game.prototype = {
 
     }, this);
   },
-  createHealth: function () {
+  createHUD: function () {
+    //health setup
     this.health = 10;
 
     var bmd = this.game.add.bitmapData(200,40);
@@ -118,6 +118,12 @@ TopDownGame.Game.prototype = {
     this.healthBar = this.game.add.sprite(0, 22, bmd);
     this.healthBar.anchor.y = 0.5;
     this.healthBar.fixedToCamera = true;
+
+    //score setup
+    this.score = 0;
+    this.scoreText = this.game.add.text(220, 16, 'Score: 0', { fontSize: '24px', fill: '#fff' });
+    this.scoreText.anchor.y = 0.5;
+    this.scoreText.fixedToCamera = true;
   },
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
@@ -197,8 +203,8 @@ TopDownGame.Game.prototype = {
     }
   },
   collect: function(player, collectable) {
-    console.log('yummy!');
-
+    this.score++;
+    this.scoreText.text = 'Score: ' + this.score;
     //remove sprite
     collectable.destroy();
   },
