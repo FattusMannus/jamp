@@ -22,6 +22,8 @@ TopDownGame.GameOver.prototype = {
     	var style = { font: "15px Arial", fill: "#ff0044", align: "center" };
 
     	var text = this.add.text(this.world.centerX-40, this.world.centerY, "Game Over Man" , style);
+
+        this.add.text(this.world.centerX-40, this.world.centerY+20, this.score , style);
         var text2 = this.add.text(this.world.centerX-40, this.world.centerY+40, "Play again?" , style);
 
 

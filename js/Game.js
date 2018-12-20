@@ -237,7 +237,7 @@ TopDownGame.Game.prototype = {
     collectable.destroy();
   },
   enterDoor: function(player, door) {
-    console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
+    this.state.start('Win');
   },
   healthUp: function() {
     this.health++;

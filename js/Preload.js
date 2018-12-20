@@ -20,6 +20,7 @@ TopDownGame.Preload.prototype = {
     this.load.image('browndoor', 'assets/images/browndoor.png');
     this.load.image('enemy', 'assets/images/player.png');
     this.load.image('scorpion', 'assets/images/scorpion.png');
+        this.load.image('health', 'assets/images/health.png');
     this.load.video('fireplace', 'assets/fireplace.mp4');
     this.load.audio('backgroundmusic', 'assets/audio/silentnight.ogg')
   
