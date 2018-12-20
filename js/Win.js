@@ -42,7 +42,13 @@ nextLine: function() {
 
     if (lineIndex === content2.length)
     {
+
+
         var style = { font: "15px Arial Black", fill: "#ff0044", align: "center" };
+
+        this.add.text(this.world.centerX-40, this.world.centerY+20, this.score , style);
+
+
         var text = this.add.text(this.world.centerX-50, this.world.centerY+65, "Celebrate >" , style);
         text.stroke = '#ffffff';
         text.strokeThickness = 8;
