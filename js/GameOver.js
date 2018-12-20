@@ -14,8 +14,11 @@ TopDownGame.GameOver.prototype = {
 	},
 
 	create: function(){
-  
-    	
+        this.game.debug.cameraInfo(this.game.camera, 32, 32);
+    	this.game.camera.x =0;
+        this.game.camera.y =0;
+
+
     	var style = { font: "15px Arial", fill: "#ff0044", align: "center" };
 
     	var text = this.add.text(this.world.centerX-40, this.world.centerY, "Game Over Man" , style);
