@@ -140,6 +140,7 @@ TopDownGame.Game.prototype = {
     this.healthBar = this.game.add.sprite(0, 26, healthBitmap);
     this.healthBar.anchor.y = 0.5;
     this.healthBar.fixedToCamera = true;
+    this.healthChunk = this.healthBar.width/this.health;
 
     //score setup
     this.score = 0;
@@ -230,7 +231,7 @@ TopDownGame.Game.prototype = {
     this.enemyHitFx.play();
 
     barWidth = this.healthBar.width;
-    this.healthBar.width = barWidth - barWidth/this.health;
+    this.healthBar.width = barWidth - this.healthChunk;
 
     if (this.health === 0) {
       this.die(player);
@@ -259,7 +260,8 @@ TopDownGame.Game.prototype = {
       this.health++;
       this.healthFx.play();
       var barWidth = this.healthBar.width;
-      this.healthBar.width = barWidth + barWidth/this.health;
+
+      this.healthBar.width = barWidth + this.healthChunk;
       
       collectable.destroy();
     }
