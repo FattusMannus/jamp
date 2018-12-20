@@ -41,7 +41,7 @@ TopDownGame.Game.prototype = {
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
 
     this.player.height=15;
-    
+
     this.player.anchor.setTo(.5,.5);
     this.player.direction = 'R';
 
@@ -136,9 +136,12 @@ TopDownGame.Game.prototype = {
 
 
     var healthBitmap = this.game.add.bitmapData(200,40);
+    this.healthText = this.game.add.text(10, 13, 'Health:', { fontSize: '13px', fill: '#fff' });
+    this.healthText.anchor.y = 0.5;
+    this.healthText.fixedToCamera = true;
     healthBitmap.ctx.beginPath();
-    healthBitmap.ctx.rect(0,0,70,8);
-    healthBitmap.ctx.fillStyle = '#00685e';
+    healthBitmap.ctx.rect(60,0,70,8);
+    healthBitmap.ctx.fillStyle = '#ffffff';
     healthBitmap.ctx.fill();
     this.healthBar = this.game.add.sprite(0, 26, healthBitmap);
     this.healthBar.anchor.y = 0.5;
