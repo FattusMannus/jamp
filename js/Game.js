@@ -230,8 +230,9 @@ TopDownGame.Game.prototype = {
   die: function (player) {
     setTimeout(function () {
       this.state.start('GameOver');
-    }, 500);
+    }.bind(this), 500);
     player.angle = 270;
+    this.input.enabled = false;
   },
   collect: function(player, collectable) {
     this.score++;
