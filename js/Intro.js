@@ -42,7 +42,7 @@ nextLine: function() {
     if (lineIndex === content.length)
     {
         var style = { font: "15px Arial Black", fill: "#ff0044", align: "center" };
-        var text = this.add.text(this.world.centerX-50, this.world.centerY+65, "Save Santa >" , style);
+        var text = this.add.text(this.world.centerX-60, this.world.centerY+65, "Save Santa >" , style);
         text.stroke = '#ffffff';
         text.strokeThickness = 8;
         text.fill = '#ff0044';

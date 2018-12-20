@@ -239,6 +239,8 @@ TopDownGame.Game.prototype = {
   },
   die: function (player) {
     setTimeout(function () {
+      this.player.body.velocity.x =0;
+      this.player.body.velocity.y =0;
       this.state.start('GameOver');
     }.bind(this), 500);
     player.angle = 270;
