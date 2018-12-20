@@ -121,9 +121,9 @@ TopDownGame.Game.prototype = {
     //health setup
     this.health = 3;
 
-    var hudBitmap = this.game.add.bitmapData(320,40);
+    var hudBitmap = this.game.add.bitmapData(window.innerWidth,40);
     hudBitmap.ctx.beginPath();
-    hudBitmap.ctx.rect(0,0,320,16);
+    hudBitmap.ctx.rect(0,0,window.innerWidth,16);
     hudBitmap.ctx.fillStyle = '#000000';
     hudBitmap.ctx.fill();
     this.hud = this.game.add.sprite(0, 22, hudBitmap);
@@ -143,7 +143,7 @@ TopDownGame.Game.prototype = {
 
     //score setup
     this.score = 0;
-    this.scoreText = this.game.add.text(250, 13, 'Score: 0', { fontSize: '13px', fill: '#fff' });
+    this.scoreText = this.game.add.text(400, 13, 'Score: 0', { fontSize: '13px', fill: '#fff' });
     this.scoreText.anchor.y = 0.5;
     this.scoreText.fixedToCamera = true;
   },
@@ -257,9 +257,10 @@ TopDownGame.Game.prototype = {
     this.state.start('Win');
   },
   healthUp: function(player, collectable) {
-    if (this.health < 10) {
+    if (this.health < 3) {
       this.health++;
       this.healthFx.play();
+      var barWidth = this.healthBar.width;
       this.healthBar.width = barWidth + barWidth/this.health;
       
       collectable.destroy();
