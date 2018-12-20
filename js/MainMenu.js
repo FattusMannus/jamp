@@ -13,10 +13,10 @@ TopDownGame.MainMenu.prototype = {
 
 	create: function(){
         this.stage.backgroundColor = "#4488AA";
-    	var santa = this.add.image(this.world.centerX-40,0, 'santa');
+    	var santa = this.add.image(this.world.centerX-50,0, 'santa');
     	var style = { font: "45px Arial Black", fill: "#ff0044", align: "center" };
 
-    	var text = this.add.text(this.world.centerX-150, this.world.centerY+55, "Click to Start!" , style);
+    	var text = this.add.text(this.world.centerX-180, this.world.centerY+55, "Click to Start!" , style);
 
 
 

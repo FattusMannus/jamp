@@ -14,17 +14,16 @@ TopDownGame.GameOver.prototype = {
 	},
 
 	create: function(){
-        this.game.debug.cameraInfo(this.game.camera, 32, 32);
     	this.game.camera.x =0;
         this.game.camera.y =0;
 
 
     	var style = { font: "15px Arial", fill: "#ff0044", align: "center" };
 
-    	var text = this.add.text(this.world.centerX-40, this.world.centerY, "Game Over Man" , style);
+    	var text = this.add.text(40, 20, "Game Over Man" , style);
 
-        this.add.text(this.world.centerX-40, this.world.centerY+20, this.score , style);
-        var text2 = this.add.text(this.world.centerX-40, this.world.centerY+40, "Play again?" , style);
+        this.add.text(40, 60, this.score , style);
+        var text2 = this.add.text(40,120,"Play again?" , style);
 
 
     	text2.inputEnabled = true;
