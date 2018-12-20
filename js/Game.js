@@ -13,6 +13,7 @@ TopDownGame.Game.prototype = {
     //audio
     this.pickupFx = this.game.add.audio('pickup');
     this.healthFx = this.game.add.audio('powerup');
+    this.enemyHitFx = this.game.add.audio('enemyhit');
     this.music = this.game.add.audio('backgroundmusic');
     this.music.loop = true;
     this.music.play();
@@ -118,21 +119,31 @@ TopDownGame.Game.prototype = {
   },
   createHUD: function () {
     //health setup
-    this.health = 10;
+    this.health = 3;
 
-    var bmd = this.game.add.bitmapData(200,40);
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0,0,70,7);
-    bmd.ctx.fillStyle = '#00685e';
-    bmd.ctx.fill();
-  
-    this.healthBar = this.game.add.sprite(0, 22, bmd);
+    var hudBitmap = this.game.add.bitmapData(320,40);
+    hudBitmap.ctx.beginPath();
+    hudBitmap.ctx.rect(0,0,320,16);
+    hudBitmap.ctx.fillStyle = '#000000';
+    hudBitmap.ctx.fill();
+    this.hud = this.game.add.sprite(0, 22, hudBitmap);
+    this.hud.alpha = 0.5;
+    this.hud.anchor.y = 0.5;
+    this.hud.fixedToCamera = true;
+
+
+    var healthBitmap = this.game.add.bitmapData(200,40);
+    healthBitmap.ctx.beginPath();
+    healthBitmap.ctx.rect(0,0,70,8);
+    healthBitmap.ctx.fillStyle = '#00685e';
+    healthBitmap.ctx.fill();
+    this.healthBar = this.game.add.sprite(0, 26, healthBitmap);
     this.healthBar.anchor.y = 0.5;
     this.healthBar.fixedToCamera = true;
 
     //score setup
     this.score = 0;
-    this.scoreText = this.game.add.text(220, 16, 'Score: 0', { fontSize: '24px', fill: '#fff' });
+    this.scoreText = this.game.add.text(250, 13, 'Score: 0', { fontSize: '13px', fill: '#fff' });
     this.scoreText.anchor.y = 0.5;
     this.scoreText.fixedToCamera = true;
   },
@@ -216,9 +227,7 @@ TopDownGame.Game.prototype = {
 
     this.health--;
     this.flash(player);
-    // knock player back
-    player.body.velocity.x = 20;
-    player.body.velocity.y = 20;
+    this.enemyHitFx.play();
 
     barWidth = this.healthBar.width;
     this.healthBar.width = barWidth - barWidth/this.health;
@@ -249,6 +258,8 @@ TopDownGame.Game.prototype = {
     if (this.health < 10) {
       this.health++;
       this.healthFx.play();
+      this.healthBar.width = barWidth + barWidth/this.health;
+      
       collectable.destroy();
     }
   }
