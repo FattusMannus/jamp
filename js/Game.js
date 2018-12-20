@@ -197,6 +197,7 @@ TopDownGame.Game.prototype = {
 
   },
   flash: function (player) {
+    this.game.camera.flash(0xff0000, 500);
     player.tint = 0xff00ff;
     setTimeout(function(){
       player.tint = 16777215;
@@ -205,7 +206,6 @@ TopDownGame.Game.prototype = {
   hit: function(player, enemy) {
 
     enemy.destroy();
-    this.game.camera.flash(0xff0000, 500);
     this.health--;
     //TODO: flash the player sprite red?
     // knock player back
