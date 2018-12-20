@@ -42,6 +42,10 @@ TopDownGame.Game.prototype = {
     //move player with cursor keys
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
+    this.music = this.game.add.audio('backgroundmusic');
+    this.music.loop = true;
+    this.music.play();
+
   },
   createItems: function() {
     //create items
