@@ -187,7 +187,7 @@ TopDownGame.Game.prototype = {
   hit: function(player, enemy) {
 
     enemy.destroy();
-
+    this.game.camera.flash(0xff0000, 500);
     this.health--;
     //TODO: flash the player sprite red?
     // knock player back
