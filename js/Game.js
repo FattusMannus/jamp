@@ -2,7 +2,7 @@ var TopDownGame = TopDownGame || {};
 
 //title screen
 TopDownGame.Game = function(){};
-
+ 
 TopDownGame.Game.prototype = {
   create: function() {
     this.map = this.game.add.tilemap('level1');
@@ -22,6 +22,10 @@ TopDownGame.Game.prototype = {
 
     this.createItems();
     this.createDoors();    
+    this.createEnemies();
+    this.createEnemiesDiagonals();
+
+    this.createHealth();
 
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
@@ -55,7 +59,55 @@ TopDownGame.Game.prototype = {
       this.createFromTiledObject(element, this.doors);
     }, this);
   },
+  createEnemies: function () {
+    this.enemies = this.game.add.group();
+    this.enemies.enableBody = true;
+    result = this.findObjectsByType('enemy', this.map, 'objectsLayer');
 
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.enemies);
+    }, this);
+
+    this.enemies.forEach(function(enemy) {
+      this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      enemy.body.collideWorldBounds = true;
+      enemy.body.bounce.setTo(1, 1);
+      enemy.body.velocity.x = 20;
+
+    }, this);
+  },
+  createEnemiesDiagonals: function () {
+    this.enemiesDiagonal = this.game.add.group();
+    this.enemiesDiagonal.enableBody = true;
+
+    result = this.findObjectsByType('enemydiagonal', this.map, 'objectsLayer');
+
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.enemiesDiagonal);
+    }, this);
+
+    this.enemiesDiagonal.forEach(function(enemy) {
+      this.game.physics.enable(enemy, Phaser.Physics.ARCADE);
+      enemy.body.collideWorldBounds = true;
+      enemy.body.bounce.setTo(1, 1);
+      enemy.body.velocity.x = 20;
+      enemy.body.velocity.y = 20;
+
+    }, this);
+  },
+  createHealth: function () {
+    this.health = 10;
+
+    var bmd = this.game.add.bitmapData(200,40);
+    bmd.ctx.beginPath();
+    bmd.ctx.rect(0,0,70,7);
+    bmd.ctx.fillStyle = '#00685e';
+    bmd.ctx.fill();
+  
+    this.healthBar = this.game.add.sprite(0, 22, bmd);
+    this.healthBar.anchor.y = 0.5;
+    this.healthBar.fixedToCamera = true;
+  },
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
     var result = new Array();
@@ -84,6 +136,13 @@ TopDownGame.Game.prototype = {
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
     this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
+    
+    //enemy collision
+    this.game.physics.arcade.collide(this.enemies, this.blockedLayer);
+    this.game.physics.arcade.collide(this.enemiesDiagonal, this.blockedLayer);
+
+    this.game.physics.arcade.collide(this.player, this.enemies, this.hit, null, this);
+    this.game.physics.arcade.collide(this.player, this.enemiesDiagonal, this.hit, null, this);
 
     //player movement
     
@@ -105,6 +164,24 @@ TopDownGame.Game.prototype = {
     }
     else if(this.cursors.right.isDown) {
       this.player.body.velocity.x += 50;
+    }
+  },
+  hit: function(player, enemy) {
+
+    enemy.destroy();
+
+    this.health--;
+    //TODO: flash the player sprite red?
+    // knock player back
+    player.body.velocity.x = 20;
+    player.body.velocity.y = 20;
+
+    barWidth = this.healthBar.width;
+    this.healthBar.width = barWidth - barWidth/this.health;
+
+    if (this.health === 0) {
+      //TODO:game over
+      this.state.start('GameOver');
     }
   },
   collect: function(player, collectable) {
