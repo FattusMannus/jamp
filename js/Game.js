@@ -31,6 +31,9 @@ TopDownGame.Game.prototype = {
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    this.player.anchor.setTo(.5,.5);
+    this.player.direction = 'R';
+
     this.game.physics.arcade.enable(this.player);
 
     //the camera will follow the player in the world
@@ -178,11 +181,26 @@ TopDownGame.Game.prototype = {
       this.player.body.velocity.y = 0;
     }
     if(this.cursors.left.isDown) {
+      this.updatePlayerDirection('L');
       this.player.body.velocity.x -= 50;
     }
     else if(this.cursors.right.isDown) {
+      this.updatePlayerDirection('R');
       this.player.body.velocity.x += 50;
     }
+  },
+  updatePlayerDirection: function (direction) {
+    if(this.player.direction !== direction){
+      this.player.scale.x *= -1;
+      this.player.direction = direction;
+    }
+
+  },
+  flash: function (player) {
+    player.tint = 0xff00ff;
+    setTimeout(function(){
+      player.tint = 16777215;
+    },100);
   },
   hit: function(player, enemy) {
 
@@ -198,9 +216,14 @@ TopDownGame.Game.prototype = {
     this.healthBar.width = barWidth - barWidth/this.health;
 
     if (this.health === 0) {
-      //TODO:game over
-      this.state.start('GameOver');
+      this.die(player);
     }
+  },
+  die: function (player) {
+    setTimeout(function () {
+      this.state.start('GameOver');
+    }, 500);
+    player.angle = 270;
   },
   collect: function(player, collectable) {
     this.score++;
