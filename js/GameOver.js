@@ -21,10 +21,16 @@ TopDownGame.GameOver.prototype = {
     	var style = { font: "15px Arial", fill: "#ff0044", align: "center" };
 
     	var text = this.add.text(40, 20, "Game Over Man" , style);
-
-        this.add.text(40, 60, this.score , style);
+           text = this.add.text(40, 30, '', { font: "14px Arial Black", fill: "#19de65" ,boundsAlignH: "center", boundsAlignV: "middle"});
+     text.stroke = '#ffffff';
+        text.strokeThickness = 8;
+        text.fill = '#ff0044';
+        this.add.text(40, 60, this.game.scoreText.text , style);
         var text2 = this.add.text(40,120,"Play again?" , style);
-
+           text2 = this.add.text(40, 30, '', { font: "14px Arial Black", fill: "#19de65" ,boundsAlignH: "center", boundsAlignV: "middle"});
+     text2.stroke = '#ffffff';
+        text2.strokeThickness = 8;
+        text2.fill = '#ff0044';
 
     	text2.inputEnabled = true;
     	text2.events.onInputDown.add(this.actionOnClick, this);
