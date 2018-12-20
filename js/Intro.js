@@ -2,8 +2,8 @@ var TopDownGame = TopDownGame || {};
 
 var content = [
         "Santa has been kidnapped! Collect the presents he dropped",
-        "whilst running away and avoid the enemies that threaten to ",
-        "ruin everyone's Christmas!",
+        "whilst he was running away and avoid the enemies that ",
+        "threaten to ruin everyone's Christmas!",
         "",
     ];
 

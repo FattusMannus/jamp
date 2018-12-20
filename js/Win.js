@@ -28,7 +28,10 @@ TopDownGame.Win.prototype = {
     
   },
   create: function() {
-    
+        line = [];
+
+        wordIndex = 0;
+        lineIndex = 0;
 
     text = this.add.text(40, 30, '', { font: "14px Arial Black", fill: "#19de65" ,boundsAlignH: "center", boundsAlignV: "middle"});
      text.stroke = '#ffffff';
@@ -46,10 +49,10 @@ nextLine: function() {
 
         var style = { font: "15px Arial Black", fill: "#ff0044", align: "center" };
 
-        this.add.text(this.world.centerX-40, this.world.centerY+20, this.score , style);
+        //this.add.text(this.world.centerX-40, this.world.centerY+20, this.score , style);
 
 
-        var text = this.add.text(this.world.centerX-50, this.world.centerY+65, "Celebrate >" , style);
+        var text = this.add.text(50, 165, "Relax by the Fire >" , style);
         text.stroke = '#ffffff';
         text.strokeThickness = 8;
         text.fill = '#ff0044';

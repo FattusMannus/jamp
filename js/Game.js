@@ -39,6 +39,9 @@ TopDownGame.Game.prototype = {
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+
+    this.player.height=15;
+    
     this.player.anchor.setTo(.5,.5);
     this.player.direction = 'R';
 
