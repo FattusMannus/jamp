@@ -19,7 +19,9 @@ TopDownGame.Preload.prototype = {
     this.load.image('player', 'assets/images/player.png');
     this.load.image('browndoor', 'assets/images/browndoor.png');
     this.load.image('enemy', 'assets/images/player.png');
-        this.load.image('scorpion', 'assets/images/scorpion.png');
+    this.load.image('scorpion', 'assets/images/scorpion.png');
+
+    this.load.video('fireplace', 'assets/fireplace.mp4');
     
   },
   create: function() {
