@@ -13,6 +13,7 @@ TopDownGame.Game.prototype = {
     //audio
     this.pickupFx = this.game.add.audio('pickup');
     this.healthFx = this.game.add.audio('powerup');
+    this.enemyHitFx = this.game.add.audio('enemyhit');
     this.music = this.game.add.audio('backgroundmusic');
     this.music.loop = true;
     this.music.play();
@@ -118,7 +119,7 @@ TopDownGame.Game.prototype = {
   },
   createHUD: function () {
     //health setup
-    this.health = 10;
+    this.health = 3;
 
     var bmd = this.game.add.bitmapData(200,40);
     bmd.ctx.beginPath();
@@ -216,9 +217,7 @@ TopDownGame.Game.prototype = {
 
     this.health--;
     this.flash(player);
-    // knock player back
-    player.body.velocity.x = 20;
-    player.body.velocity.y = 20;
+    this.enemyHitFx.play();
 
     barWidth = this.healthBar.width;
     this.healthBar.width = barWidth - barWidth/this.health;
@@ -250,6 +249,8 @@ TopDownGame.Game.prototype = {
     if (this.health < 10) {
       this.health++;
       this.healthFx.play();
+      this.healthBar.width = barWidth + barWidth/this.health;
+      
       collectable.destroy();
     }
   }

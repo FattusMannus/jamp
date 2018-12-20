@@ -25,6 +25,7 @@ TopDownGame.Preload.prototype = {
     
     this.load.audio('powerup', 'assets/audio/Powerup.ogg');
     this.load.audio('pickup', 'assets/audio/Pickup.ogg');
+    this.load.audio('enemyhit', 'assets/audio/enemyhit.ogg');
   },
   create: function() {
     this.state.start('MainMenu');
