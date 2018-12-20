@@ -246,8 +246,11 @@ TopDownGame.Game.prototype = {
 
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
   },
-  healthUp: function() {
-    this.health++;
-    this.healthFx.play();
+  healthUp: function(player, collectable) {
+    if (this.health < 10) {
+      this.health++;
+      this.healthFx.play();
+      collectable.destroy();
+    }
   }
 };
