@@ -21,6 +21,7 @@ TopDownGame.Game.prototype = {
     this.backgroundlayer.resizeWorld();
 
     this.createItems();
+    this.createHealthItems();
     this.createDoors();    
     this.createEnemies();
     this.createEnemiesDiagonals();
@@ -49,6 +50,15 @@ TopDownGame.Game.prototype = {
       this.createFromTiledObject(element, this.items);
     }, this);
   },
+  createHealthItems: function () {
+    this.healthItems = this.game.add.group();
+    this.healthItems.enableBody = true;
+
+    result = this.findObjectsByType('health', this.map, 'objectsLayer');
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.healthItems);
+    }, this);
+  },
   createDoors: function() {
     //create doors
     this.doors = this.game.add.group();
@@ -73,6 +83,7 @@ TopDownGame.Game.prototype = {
       enemy.body.collideWorldBounds = true;
       enemy.body.bounce.setTo(1, 1);
       enemy.body.velocity.x = 20;
+      enemy.anchor.setTo(.5,.5);
 
     }, this);
   },
@@ -135,6 +146,7 @@ TopDownGame.Game.prototype = {
     //collision
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
+    this.game.physics.arcade.overlap(this.player, this.healthItems, this.healthUp, null, this);
     this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
     
     //enemy collision
@@ -193,4 +205,7 @@ TopDownGame.Game.prototype = {
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
   },
+  healthUp: function() {
+    this.health++;
+  }
 };
