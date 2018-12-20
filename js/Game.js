@@ -21,15 +21,19 @@ TopDownGame.Game.prototype = {
     this.backgroundlayer.resizeWorld();
 
     this.createItems();
+    this.createHealthItems();
     this.createDoors();    
     this.createEnemies();
     this.createEnemiesDiagonals();
 
-    this.createHealth();
+    this.createHUD();
 
     //create player
     var result = this.findObjectsByType('playerStart', this.map, 'objectsLayer')
     this.player = this.game.add.sprite(result[0].x, result[0].y, 'player');
+    this.player.anchor.setTo(.5,.5);
+    this.player.direction = 'R';
+
     this.game.physics.arcade.enable(this.player);
 
     //the camera will follow the player in the world
@@ -47,6 +51,15 @@ TopDownGame.Game.prototype = {
     result = this.findObjectsByType('item', this.map, 'objectsLayer');
     result.forEach(function(element){
       this.createFromTiledObject(element, this.items);
+    }, this);
+  },
+  createHealthItems: function () {
+    this.healthItems = this.game.add.group();
+    this.healthItems.enableBody = true;
+
+    result = this.findObjectsByType('health', this.map, 'objectsLayer');
+    result.forEach(function(element){
+      this.createFromTiledObject(element, this.healthItems);
     }, this);
   },
   createDoors: function() {
@@ -95,7 +108,8 @@ TopDownGame.Game.prototype = {
 
     }, this);
   },
-  createHealth: function () {
+  createHUD: function () {
+    //health setup
     this.health = 10;
 
     var bmd = this.game.add.bitmapData(200,40);
@@ -107,6 +121,12 @@ TopDownGame.Game.prototype = {
     this.healthBar = this.game.add.sprite(0, 22, bmd);
     this.healthBar.anchor.y = 0.5;
     this.healthBar.fixedToCamera = true;
+
+    //score setup
+    this.score = 0;
+    this.scoreText = this.game.add.text(220, 16, 'Score: 0', { fontSize: '24px', fill: '#fff' });
+    this.scoreText.anchor.y = 0.5;
+    this.scoreText.fixedToCamera = true;
   },
   //find objects in a Tiled layer that containt a property called "type" equal to a certain value
   findObjectsByType: function(type, map, layer) {
@@ -135,6 +155,7 @@ TopDownGame.Game.prototype = {
     //collision
     this.game.physics.arcade.collide(this.player, this.blockedLayer);
     this.game.physics.arcade.overlap(this.player, this.items, this.collect, null, this);
+    this.game.physics.arcade.overlap(this.player, this.healthItems, this.healthUp, null, this);
     this.game.physics.arcade.overlap(this.player, this.doors, this.enterDoor, null, this);
     
     //enemy collision
@@ -160,17 +181,33 @@ TopDownGame.Game.prototype = {
       this.player.body.velocity.y = 0;
     }
     if(this.cursors.left.isDown) {
+      this.updatePlayerDirection('L');
       this.player.body.velocity.x -= 50;
     }
     else if(this.cursors.right.isDown) {
+      this.updatePlayerDirection('R');
       this.player.body.velocity.x += 50;
     }
+  },
+  updatePlayerDirection: function (direction) {
+    if(this.player.direction !== direction){
+      this.player.scale.x *= -1;
+      this.player.direction = direction;
+    }
+
+  },
+  flash: function (player) {
+    this.game.camera.flash(0xff0000, 500);
+    player.tint = 0xff00ff;
+    setTimeout(function(){
+      player.tint = 16777215;
+    },100);
   },
   hit: function(player, enemy) {
 
     enemy.destroy();
 
-    this.health=0;
+    this.health--;
     //TODO: flash the player sprite red?
     // knock player back
     player.body.velocity.x = 20;
@@ -180,17 +217,25 @@ TopDownGame.Game.prototype = {
     this.healthBar.width = barWidth - barWidth/this.health;
 
     if (this.health === 0) {
-      //TODO:game over
-      this.state.start('GameOver');
+      this.die(player);
     }
   },
+  die: function (player) {
+    setTimeout(function () {
+      this.state.start('GameOver');
+    }, 500);
+    player.angle = 270;
+  },
   collect: function(player, collectable) {
-    console.log('yummy!');
-
+    this.score++;
+    this.scoreText.text = 'Score: ' + this.score;
     //remove sprite
     collectable.destroy();
   },
   enterDoor: function(player, door) {
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
   },
+  healthUp: function() {
+    this.health++;
+  }
 };
