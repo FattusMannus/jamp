@@ -112,7 +112,7 @@ TopDownGame.Game.prototype = {
   findObjectsByType: function(type, map, layer) {
     var result = new Array();
     map.objects[layer].forEach(function(element){
-      if(element.properties.type === type) {
+      if(element.properties && element.properties.type === type) {
         //Phaser uses top left, Tiled bottom left so we have to adjust
         //also keep in mind that the cup images are a bit smaller than the tile which is 16x16
         //so they might not be placed in the exact position as in Tiled
@@ -170,7 +170,7 @@ TopDownGame.Game.prototype = {
 
     enemy.destroy();
 
-    this.health--;
+    this.health=0;
     //TODO: flash the player sprite red?
     // knock player back
     player.body.velocity.x = 20;
