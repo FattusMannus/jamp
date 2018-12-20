@@ -22,7 +22,9 @@ TopDownGame.Preload.prototype = {
     this.load.image('scorpion', 'assets/images/scorpion.png');
     this.load.video('fireplace', 'assets/fireplace.mp4');
     this.load.audio('backgroundmusic', 'assets/audio/silentnight.ogg')
-  
+    
+    this.load.audio('powerup', 'assets/audio/Powerup.ogg');
+    this.load.audio('pickup', 'assets/audio/Pickup.ogg');
   },
   create: function() {
     this.state.start('MainMenu');

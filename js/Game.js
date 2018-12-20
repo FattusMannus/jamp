@@ -9,6 +9,13 @@ TopDownGame.Game.prototype = {
 
     //the first parameter is the tileset name as specified in Tiled, the second is the key to the asset
     this.map.addTilesetImage('tiles', 'gameTiles');
+    
+    //audio
+    this.pickupFx = this.game.add.audio('pickup');
+    this.healthFx = this.game.add.audio('powerup');
+    this.music = this.game.add.audio('backgroundmusic');
+    this.music.loop = true;
+    this.music.play();
 
     //create layer
     this.backgroundlayer = this.map.createLayer('backgroundLayer');
@@ -42,9 +49,6 @@ TopDownGame.Game.prototype = {
     //move player with cursor keys
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    this.music = this.game.add.audio('backgroundmusic');
-    this.music.loop = true;
-    this.music.play();
 
   },
   createItems: function() {
@@ -201,18 +205,17 @@ TopDownGame.Game.prototype = {
 
   },
   flash: function (player) {
-    this.game.camera.flash(0xff0000, 500);
     player.tint = 0xff00ff;
     setTimeout(function(){
       player.tint = 16777215;
-    },100);
+    },50);
   },
   hit: function(player, enemy) {
 
     enemy.destroy();
 
     this.health--;
-    //TODO: flash the player sprite red?
+    this.flash(player);
     // knock player back
     player.body.velocity.x = 20;
     player.body.velocity.y = 20;
@@ -233,13 +236,18 @@ TopDownGame.Game.prototype = {
   collect: function(player, collectable) {
     this.score++;
     this.scoreText.text = 'Score: ' + this.score;
+    this.pickupFx.play();
+
     //remove sprite
     collectable.destroy();
   },
   enterDoor: function(player, door) {
+    this.game.camera.flash(0xffffff, 500);
+
     console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
   },
   healthUp: function() {
     this.health++;
+    this.healthFx.play();
   }
 };
