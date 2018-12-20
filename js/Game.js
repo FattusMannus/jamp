@@ -121,19 +121,29 @@ TopDownGame.Game.prototype = {
     //health setup
     this.health = 3;
 
-    var bmd = this.game.add.bitmapData(200,40);
-    bmd.ctx.beginPath();
-    bmd.ctx.rect(0,0,70,7);
-    bmd.ctx.fillStyle = '#00685e';
-    bmd.ctx.fill();
-  
-    this.healthBar = this.game.add.sprite(0, 22, bmd);
+    var hudBitmap = this.game.add.bitmapData(320,40);
+    hudBitmap.ctx.beginPath();
+    hudBitmap.ctx.rect(0,0,320,16);
+    hudBitmap.ctx.fillStyle = '#000000';
+    hudBitmap.ctx.fill();
+    this.hud = this.game.add.sprite(0, 22, hudBitmap);
+    this.hud.alpha = 0.5;
+    this.hud.anchor.y = 0.5;
+    this.hud.fixedToCamera = true;
+
+
+    var healthBitmap = this.game.add.bitmapData(200,40);
+    healthBitmap.ctx.beginPath();
+    healthBitmap.ctx.rect(0,0,70,8);
+    healthBitmap.ctx.fillStyle = '#00685e';
+    healthBitmap.ctx.fill();
+    this.healthBar = this.game.add.sprite(0, 26, healthBitmap);
     this.healthBar.anchor.y = 0.5;
     this.healthBar.fixedToCamera = true;
 
     //score setup
     this.score = 0;
-    this.scoreText = this.game.add.text(220, 16, 'Score: 0', { fontSize: '24px', fill: '#fff' });
+    this.scoreText = this.game.add.text(250, 13, 'Score: 0', { fontSize: '13px', fill: '#fff' });
     this.scoreText.anchor.y = 0.5;
     this.scoreText.fixedToCamera = true;
   },
@@ -241,9 +251,7 @@ TopDownGame.Game.prototype = {
     collectable.destroy();
   },
   enterDoor: function(player, door) {
-    this.game.camera.flash(0xffffff, 500);
-
-    console.log('entering door that will take you to '+door.targetTilemap+' on x:'+door.targetX+' and y:'+door.targetY);
+    this.state.start('Win');
   },
   healthUp: function(player, collectable) {
     if (this.health < 10) {
